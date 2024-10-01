@@ -1,6 +1,8 @@
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TodoList from "./TodoList";
+import { Button } from "@/components/ui/button"
+import AddTodoItem from './AddTodoItem';
 
 function TodoApp() {
   return (
@@ -27,6 +29,13 @@ function TodoApp() {
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </div>
+              </div>
+              <div className='flex items-center justify-between'>
+                <div className='flex flex-1 items-center space-x-2'>
+                <Button variant="outline">Filter</Button>
+                <Button variant="outline">Sort</Button>
+                </div>
+                <AddTodoItem />
               </div>
               <TodoList />
             </div>
