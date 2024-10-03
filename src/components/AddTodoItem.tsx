@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -18,10 +19,49 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { TodoItemType } from "./TodoItem";
 
-const AddTodoItem = () => {
+const AddTodoItem = ({ updateData }: TodoItemType) => {
+  const [obj, setObj] = useState({});
+
+  const onInputChange = (e) => {
+    setObj({
+      ...obj,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const onSelectChange = (value) => {
+    setObj({
+      ...obj,
+      completed: value,
+    });
+  };
+
+  const onSaveClick = () => {
+    const data: TodoItemType = { ...obj };
+    data.id = Number(data.id);
+    data.userId = Number(data.userId);
+    updateData(data, "ADD");
+  };
+
+  const isFormValid = () => {
+    const { id, userId, todo, completed } = obj;
+
+    if (
+      id != undefined &&
+      userId != undefined &&
+      todo?.length > 0 &&
+      (completed === true || completed === false)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={() => setObj({})}>
       <DialogTrigger asChild>
         <Button variant="outline">Add</Button>
       </DialogTrigger>
@@ -35,37 +75,55 @@ const AddTodoItem = () => {
             <Label htmlFor="id" className="text-right">
               Id
             </Label>
-            <Input id="id" value="" className="col-span-3" />
+            <Input
+              id="id"
+              type="number"
+              className="col-span-3"
+              onChange={onInputChange}
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="userId" className="text-right">
               UserId
             </Label>
-            <Input id="userId" value="" className="col-span-3" />
+            <Input
+              id="userId"
+              type="number"
+              className="col-span-3"
+              onChange={onInputChange}
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="description" className="text-right">
               Description
             </Label>
-            <Input id="description" value="" className="col-span-3" />
+            <Input id="todo" className="col-span-3" onChange={onInputChange} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <div className="text-right">Status</div>
             <div className="col-span-3">
-              <Select>
+              <Select onValueChange={onSelectChange}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select a status" />
+                  <SelectValue placeholder="Select todo status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value={true}>Completed</SelectItem>
+                  <SelectItem value={false}>Pending</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save</Button>
+          <DialogClose asChild>
+            <Button
+              type="submit"
+              onClick={onSaveClick}
+              disabled={!isFormValid()}
+            >
+              Save
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

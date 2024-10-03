@@ -1,8 +1,6 @@
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TodoList from "./TodoList";
-import { Button } from "@/components/ui/button"
-import AddTodoItem from './AddTodoItem';
 
 function TodoApp() {
   return (
@@ -13,7 +11,7 @@ function TodoApp() {
             Todo App
           </h1>
           <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow">
-            <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+            <div className="h-full flex-1 flex-col space-y-8 p-8 ">
               <div className="flex items-center justify-between space-y-2">
                 <div>
                   <h2 className="text-2xl font-bold tracking-tight">
@@ -29,13 +27,6 @@ function TodoApp() {
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </div>
-              </div>
-              <div className='flex items-center justify-between'>
-                <div className='flex flex-1 items-center space-x-2'>
-                <Button variant="outline">Filter</Button>
-                <Button variant="outline">Sort</Button>
-                </div>
-                <AddTodoItem />
               </div>
               <TodoList />
             </div>

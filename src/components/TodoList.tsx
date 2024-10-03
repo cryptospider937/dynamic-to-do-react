@@ -7,8 +7,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import TodoItem, { TodoItemType } from "./TodoItem";
 import { getTodos } from "../services/utils";
+import AddTodoItem from "./AddTodoItem";
 
 const TodoList = () => {
   const [data, setData] = useState([]);
@@ -24,6 +26,35 @@ const TodoList = () => {
     }
   };
 
+  const updateData = (obj: TodoItemType, taskType: string) => {
+    const tempData = [...data];
+    let result = [];
+    switch (taskType) {
+      case "UPDATE":
+        tempData.find((o: TodoItemType, i) => {
+          if (o.id === obj.id) {
+            tempData[i].completed = !o.completed;
+            setData(tempData);
+            localStorage.setItem("todos", JSON.stringify(tempData));
+            return true;
+          }
+        });
+        break;
+      case "DELETE":
+        result = tempData.filter((o: TodoItemType) => {
+          return o.id !== obj.id;
+        });
+        setData(result);
+        localStorage.setItem("todos", JSON.stringify(result));
+        break;
+      case "ADD":
+        tempData.push(obj);
+        setData(tempData);
+        localStorage.setItem("todos", JSON.stringify(tempData));
+        break;
+    }
+  };
+
   useEffect(() => {
     if (getLocalStorageData) {
       const todos = JSON.parse(getLocalStorageData);
@@ -34,34 +65,44 @@ const TodoList = () => {
   }, [getLocalStorageData]);
 
   return (
-    <div className="rounded-md border">
-      <div className="relative w-full overflow-auto">
-        <Table>
-          <TableCaption>A list of your recent todos.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">Id</TableHead>
-              <TableHead>UserId</TableHead>
-              <TableHead>TodoItem Description</TableHead>
-              <TableHead className="text-right">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((todoItem: TodoItemType) => {
-              return (
-                <TodoItem
-                  key={todoItem.id}
-                  id={todoItem.id}
-                  userId={todoItem.userId}
-                  todo={todoItem.todo}
-                  completed={todoItem.completed}
-                />
-              );
-            })}
-          </TableBody>
-        </Table>
+    <>
+      <div className="flex items-center justify-between">
+        <div className="flex flex-1 items-center space-x-2">
+          <Button variant="outline">Filter</Button>
+          <Button variant="outline">Sort</Button>
+        </div>
+        <AddTodoItem updateData={updateData} />
       </div>
-    </div>
+      <div className="rounded-md border">
+        <div className="relative w-full overflow-auto">
+          <Table>
+            <TableCaption>A list of your recent todos.</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[100px]">Id</TableHead>
+                <TableHead>UserId</TableHead>
+                <TableHead>TodoItem Description</TableHead>
+                <TableHead className="text-right">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data.map((todoItem: TodoItemType) => {
+                return (
+                  <TodoItem
+                    key={todoItem.id}
+                    id={todoItem.id}
+                    userId={todoItem.userId}
+                    todo={todoItem.todo}
+                    completed={todoItem.completed}
+                    updateData={updateData}
+                  />
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    </>
   );
 };
 
