@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -20,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TodoItemType } from "./TodoItem";
+import { useState } from "react";
 
 const AddTodoItem = ({ updateData }: TodoItemType) => {
   const [obj, setObj] = useState({});

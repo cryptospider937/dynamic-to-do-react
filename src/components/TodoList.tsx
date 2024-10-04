@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import {
+import { useEffect, useState } from "react";import {
   Table,
   TableBody,
   TableCaption,
