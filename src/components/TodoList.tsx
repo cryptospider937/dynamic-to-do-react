@@ -67,8 +67,8 @@ const TodoList = () => {
     <>
       <div className="flex items-center justify-between">
         <div className="flex flex-1 items-center space-x-2">
-          <Button variant="outline">Filter</Button>
-          <Button variant="outline">Sort</Button>
+          {/* <Button variant="outline">Filter</Button> */}
+          Total: {data.length}
         </div>
         <AddTodoItem updateData={updateData} />
       </div>

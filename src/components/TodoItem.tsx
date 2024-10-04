@@ -7,7 +7,7 @@ export type TodoItemType = {
   todo: string;
   completed: boolean;
   userId: number;
-  updateData: (...args: unknown[]) => unknown;
+  updateData: (...args: TodoItemType[]) => unknown;
 };
 
 const TodoItem = ({
@@ -17,12 +17,12 @@ const TodoItem = ({
   completed,
   updateData,
 }: TodoItemType) => {
-  const onRowClick = (e) => {
+  const onRowClick = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     updateData({id}, 'UPDATE');
   };
 
-  const deleteItem = (e) => {
+  const deleteItem = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     updateData({id}, 'DELETE');
   };

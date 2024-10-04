@@ -19,22 +19,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TodoItemType } from "./TodoItem";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 const AddTodoItem = ({ updateData }: TodoItemType) => {
   const [obj, setObj] = useState({});
 
-  const onInputChange = (e) => {
+  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setObj({
       ...obj,
-      [e.target.id]: e.target.value,
+      [(e.target as HTMLInputElement).id]: (e.target as HTMLInputElement).value,
     });
   };
 
-  const onSelectChange = (value) => {
+  const onSelectChange = (value: string) => {
     setObj({
       ...obj,
-      completed: value,
+      completed: (value === 'true'),
     });
   };
 
@@ -107,8 +107,8 @@ const AddTodoItem = ({ updateData }: TodoItemType) => {
                   <SelectValue placeholder="Select todo status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={true}>Completed</SelectItem>
-                  <SelectItem value={false}>Pending</SelectItem>
+                  <SelectItem value={'true'}>Completed</SelectItem>
+                  <SelectItem value={'false'}>Pending</SelectItem>
                 </SelectContent>
               </Select>
             </div>
